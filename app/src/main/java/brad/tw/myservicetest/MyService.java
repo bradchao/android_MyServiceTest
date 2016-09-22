@@ -28,6 +28,7 @@ public class MyService extends Service {
         super.onCreate();
 
         timer = new Timer();
+        timer.schedule(new BadTask(),0,1000);
 
         mp = MediaPlayer.create(this, R.raw.brad);
         Log.d("brad", "len: " + mp.getDuration());
@@ -51,6 +52,13 @@ public class MyService extends Service {
                 it.putExtra("now", mp.getCurrentPosition());
                 sendBroadcast(it);
             }
+        }
+    }
+
+    private class BadTask extends TimerTask {
+        @Override
+        public void run() {
+            Log.d("brad", "OKOK");
         }
     }
 

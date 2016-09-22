@@ -49,6 +49,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+//    @Override
+//    public void finish() {
+//        unregisterReceiver(receiver);
+//        super.finish();
+//    }
+
     public void test1(View v){
         Intent it = new Intent(this, MyService.class);
         startService(it);
