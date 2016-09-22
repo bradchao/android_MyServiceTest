@@ -7,9 +7,12 @@ import android.os.IBinder;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MyService extends Service {
     private MediaPlayer mp;
+    private Timer timer;
 
     public MyService() {
     }
@@ -23,6 +26,8 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        timer = new Timer();
 
         mp = MediaPlayer.create(this, R.raw.brad);
         Log.d("brad", "len: " + mp.getDuration());
@@ -38,10 +43,22 @@ public class MyService extends Service {
 //        }
     }
 
+    private class MyTask extends TimerTask {
+        @Override
+        public void run() {
+            if (mp != null && mp.isPlaying()){
+                Intent it = new Intent("bradmp3");
+                it.putExtra("now", mp.getCurrentPosition());
+                sendBroadcast(it);
+            }
+        }
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         mp.start();
+        timer.schedule(new MyTask(),0, 500);
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -55,6 +72,11 @@ public class MyService extends Service {
             }
             mp.release();
             mp = null;
+        }
+        if (timer != null){
+            timer.purge();
+            timer.cancel();
+            timer = null;
         }
     }
 }

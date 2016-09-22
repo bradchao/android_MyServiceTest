@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             int len = intent.getIntExtra("len",-1);
-            seekbar.setMax(len);
+            int now = intent.getIntExtra("now", -1);
+            if (len != -1) seekbar.setMax(len);
+            if (now != -1) seekbar.setProgress(now);
         }
     }
 
