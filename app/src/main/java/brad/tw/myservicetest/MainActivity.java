@@ -25,6 +25,28 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("bradmp3");
         registerReceiver(receiver,filter);
 
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser){
+                    Intent it = new Intent(MainActivity.this, MyService.class);
+                    it.putExtra("skip", progress);
+                    startService(it);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
     }
 
     public void test1(View v){
